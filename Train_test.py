@@ -10,13 +10,13 @@ X = np.array([1, 2, 3, 4, 5]).reshape(-1, 1)  # study hours
 y = np.array([55, 60, 65, 70, 75])  # scores
 
 # Step 2 — Split into train and test
-# test_size=0.2 → 20% data used for testing
+# test_size=0.4 → 40% data used for testing (ensures at least 2 test samples)
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.4, random_state=42
 )
 
-print("Training data:", X_train)
-print("Testing data:", X_test)
+print("Training data:\n", X_train.flatten())
+print("Testing data:\n", X_test.flatten())
 
 # Step 3 — Train the model
 model = LinearRegression()
@@ -26,12 +26,11 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 print("\nPredicted:", y_pred)
-print("Actual:", y_test)
+print("Actual:   ", y_test)
 
-# Step 5 — Measure accuracy (R² score)
-# R² Score = how well the model fits the data
-# 1.0 = perfect
-# 0.7+ = good
-# 0 or negative = bad
-score = r2_score(y_test, y_pred)
-print("\nModel Accuracy (R² Score):", score)
+# Step 5 — Measure accuracy (R² score) // how well the model fits the data
+if len(y_test) >= 2:
+    score = r2_score(y_test, y_pred)
+    print("\nModel Accuracy (R² Score):", score)
+else:
+    print("\nNot enough test samples to compute R² Score (need at least 2).")
